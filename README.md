@@ -6,11 +6,19 @@
 ```sh
 gleam add colorhash@1
 ```
+
 ```gleam
 import colorhash
 
 pub fn main() -> Nil {
-  // TODO: An example of the project in use
+  colorhash.new() |> colorhash.to_hsl("hello world")
+  // -> #(188.1416781292985, 0.65, 0.65)
+
+  colorhash.new() |> colorhash.to_rgb("hello world")
+  // -> #(108, 208, 224)
+
+  colorhash.new() |> colorhash.to_hex("hello world")
+  // -> "#6CD0E0"
 }
 ```
 
