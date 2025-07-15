@@ -21,12 +21,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: cd demo
-      - run: npm run build
+      - run: cd demo && npm i && npm run build
       - id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: demo/dist
 
   # https://github.com/actions/deploy-pages
   deploy:
