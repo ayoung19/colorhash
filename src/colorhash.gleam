@@ -1,9 +1,9 @@
 import gleam/bit_array
 import gleam/crypto
 import gleam/dict.{type Dict}
-import gleam/float
 import gleam/int
 import gleam/list
+import gleam_community/colour.{type Color}
 
 pub type ColorHash {
   ColorHash(
@@ -21,7 +21,7 @@ pub fn new() -> ColorHash {
     lightnesses: [0.35, 0.5, 0.65]
       |> list.index_map(fn(x, i) { #(i, x) })
       |> dict.from_list,
-    hue_ranges: [#(0.0, 359.0)]
+    hue_ranges: [#(0.0, 1.0)]
       |> list.index_map(fn(x, i) { #(i, x) })
       |> dict.from_list,
   )
@@ -63,7 +63,7 @@ pub fn with_hue_ranges(
   )
 }
 
-pub fn to_hsl(color_hash: ColorHash, input: String) -> #(Float, Float, Float) {
+pub fn to_color(color_hash: ColorHash, input: String) -> Color {
   let default_color_hash = new()
   let hue_ranges = case dict.size(color_hash.hue_ranges) {
     0 -> default_color_hash.hue_ranges
@@ -99,38 +99,7 @@ pub fn to_hsl(color_hash: ColorHash, input: String) -> #(Float, Float, Float) {
       { hash / 360 / dict.size(saturations) } % dict.size(saturations),
     )
 
-  #(h, s, l)
-}
+  let assert Ok(c) = colour.from_hsl(h, s, l)
 
-pub fn to_rgb(color_hash: ColorHash, input: String) -> #(Int, Int, Int) {
-  let #(h, s, l) = to_hsl(color_hash, input)
-  hsl_to_rgb(h, s, l)
-}
-
-pub fn to_hex(color_hash: ColorHash, input: String) -> String {
-  let #(r, g, b) = to_rgb(color_hash, input)
-  "#" <> int.to_base16(r) <> int.to_base16(g) <> int.to_base16(b)
-}
-
-fn hsl_to_rgb(h: Float, s: Float, l: Float) -> #(Int, Int, Int) {
-  let c = { 1.0 -. float.absolute_value(2.0 *. l -. 1.0) } *. s
-  let h_prime = h /. 60.0
-  let h_mod_2 = h_prime -. float.floor(h_prime /. 2.0) *. 2.0
-  let x = c *. { 1.0 -. float.absolute_value(h_mod_2 -. 1.0) }
-  let m = l -. c /. 2.0
-
-  let #(r1, g1, b1) = case h {
-    h if h <. 60.0 -> #(c, x, 0.0)
-    h if h <. 120.0 -> #(x, c, 0.0)
-    h if h <. 180.0 -> #(0.0, c, x)
-    h if h <. 240.0 -> #(0.0, x, c)
-    h if h <. 300.0 -> #(x, 0.0, c)
-    _ -> #(c, 0.0, x)
-  }
-
-  #(
-    float.round({ r1 +. m } *. 255.0),
-    float.round({ g1 +. m } *. 255.0),
-    float.round({ b1 +. m } *. 255.0),
-  )
+  c
 }
