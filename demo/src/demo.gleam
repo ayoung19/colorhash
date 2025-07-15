@@ -1,5 +1,3 @@
-// IMPORTS ---------------------------------------------------------------------
-
 import colorhash
 import gleam/list
 import gleam/string
