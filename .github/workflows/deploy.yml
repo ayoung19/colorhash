@@ -1,0 +1,47 @@
+name: build-and-deploy
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "27.1.2"
+          gleam-version: "1.11.1"
+          rebar3-version: "3"
+          # elixir-version: "1"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: cd demo
+      - run: npm run build
+      - id: deployment
+        uses: actions/upload-pages-artifact
+        with:
+          path: dist
+
+  # https://github.com/actions/deploy-pages
+  deploy:
+    # Add a dependency to the build job
+    needs: build
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages
