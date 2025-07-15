@@ -4,4 +4,5 @@ import gleam from "vite-gleam";
 
 export default defineConfig({
   plugins: [gleam(), nodePolyfills()],
+  base: "/colorhash/",
 });
