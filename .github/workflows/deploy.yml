@@ -24,7 +24,7 @@ jobs:
       - run: cd demo
       - run: npm run build
       - id: deployment
-        uses: actions/upload-pages-artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
@@ -44,4 +44,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: deployment
-        uses: actions/deploy-pages
+        uses: actions/deploy-pages@v4
