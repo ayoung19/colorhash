@@ -1,6 +1,7 @@
 import colorhash
 import gleam/list
 import gleam/string
+import gleam_community/colour.{type Color}
 import lustre
 import lustre/attribute
 import lustre/element.{type Element}
@@ -35,9 +36,11 @@ fn view(model: Model) -> Element(Msg) {
   let assert [value, ..] = model
 
   html.div([attribute.class("container mx-auto p-4")], [
+    // TODO: Add version.
     html.h1([attribute.class("font-mono font-bold text-2xl")], [
       html.text("Color Hash"),
     ]),
+    // TODO: Add link to docs.
     html.p([attribute.class("font-mono text-gray-500 mb-4")], [
       html.text("A Gleam library for deterministic string to color conversion."),
     ]),
@@ -47,6 +50,7 @@ fn view(model: Model) -> Element(Msg) {
       ),
       attribute.value(value),
       event.on_input(OnInput),
+      attribute.autofocus(True),
     ]),
     html.div(
       [attribute.class("flex flex-col gap-4")],
@@ -59,17 +63,32 @@ fn view(model: Model) -> Element(Msg) {
                 attribute.class("w-8 h-8"),
                 attribute.style(
                   "background-color",
-                  colorhash.new() |> colorhash.to_hex(x),
+                  "#"
+                    <> colorhash.new()
+                  |> colorhash.to_color(x)
+                  |> unwrap_color
+                  |> colour.to_rgb_hex_string,
                 ),
               ],
               [],
             ),
             html.span([attribute.class("font-mono")], [
-              html.text(colorhash.new() |> colorhash.to_hex(x)),
+              html.text(
+                "#"
+                <> colorhash.new()
+                |> colorhash.to_color(x)
+                |> unwrap_color
+                |> colour.to_rgb_hex_string,
+              ),
             ]),
             html.span([attribute.class("font-mono underline")], [html.text(x)]),
           ])
         }),
     ),
   ])
+}
+
+fn unwrap_color(res: Result(Color, Nil)) -> Color {
+  let assert Ok(color) = res
+  color
 }

@@ -2,7 +2,8 @@
 # You typically do not need to edit this file
 
 packages = [
-  { name = "colorhash", version = "0.1.1", build_tools = ["gleam"], requirements = ["gleam_crypto", "gleam_stdlib"], otp_app = "colorhash", source = "hex", outer_checksum = "1DAE6B8C47EC3A8AB43AD6DE018FEDFC9492BEAFD27FD4EC42AEF8E6F38753CA" },
+  { name = "colorhash", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_community_colour", "gleam_crypto", "gleam_stdlib"], otp_app = "colorhash", source = "hex", outer_checksum = "2DFA69E3D23BA9B19C4732C049D0D45AD6B4D59EF1D5D78B4D55D05B47317772" },
+  { name = "gleam_community_colour", version = "2.0.2", build_tools = ["gleam"], requirements = ["gleam_json", "gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "E34DD2C896AC3792151EDA939DA435FF3B69922F33415ED3C4406C932FBE9634" },
   { name = "gleam_crypto", version = "1.5.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_crypto", source = "hex", outer_checksum = "50774BAFFF1144E7872814C566C5D653D83A3EBF23ACC3156B757A1B6819086E" },
   { name = "gleam_erlang", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_erlang", source = "hex", outer_checksum = "F91CE62A2D011FA13341F3723DB7DB118541AAA5FE7311BD2716D018F01EF9E3" },
   { name = "gleam_json", version = "3.0.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_json", source = "hex", outer_checksum = "874FA3C3BB6E22DD2BB111966BD40B3759E9094E05257899A7C08F5DE77EC049" },
@@ -13,6 +14,7 @@ packages = [
 ]
 
 [requirements]
-colorhash = { version = ">= 0.1.1 and < 1.0.0" }
+colorhash = { version = ">= 1.0.0 and < 2.0.0" }
+gleam_community_colour = { version = ">= 2.0.2 and < 3.0.0" }
 gleam_stdlib = { version = ">= 0.44.0 and < 2.0.0" }
 lustre = { version = ">= 5.2.1 and < 6.0.0" }
